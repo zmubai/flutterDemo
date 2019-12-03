@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:github_client_app/models/index.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:built_value/json_object.dart';
+import 'CacheObject.dart';
 
 //枚举变量
 const _themes = <MaterialColor> [
@@ -21,7 +22,7 @@ class Global {
   static Profile profile = Profile();
 
   // 网络缓存对象
-  // static NetCache netCache = NetCache();
+  static NetCache netCache = NetCache();
 
   //便捷方法？ =>
   static List<MaterialColor> get themes => _themes;
@@ -114,8 +115,4 @@ class LocalModel extends ProfileChangeNotifier{
       notifyListeners();
     }
   }
-}
-
-class CacheObject {
-  
 }
