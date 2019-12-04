@@ -3,29 +3,28 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:github_client_app/common/Global.dart';
 
-
 class CacheObject {
   Response response;
   int timeStamp;
-   CacheObject (this.response)
-    : timeStamp = DateTime.now().millisecondsSinceEpoch;
+  CacheObject(this.response)
+      : timeStamp = DateTime.now().millisecondsSinceEpoch;
 
   @override
-   bool operator == (other){
-     return response.hashCode == other.hashCode;
-   }
+  bool operator ==(other) {
+    return response.hashCode == other.hashCode;
+  }
 
   @override
   int get hashCode => response.realUri.hashCode;
 }
 
-class NetCache extends Interceptor{
+class NetCache extends Interceptor {
   var cache = LinkedHashMap<String, CacheObject>();
 
   @override
-  Future onRequest(RequestOptions options) async{
-    //no cache 
-    if(!Global.profile.cache.enable) return options;
+  Future onRequest(RequestOptions options) async {
+    //no cache
+    if (!Global.profile.cache.enable) return options;
 
     bool refresh = options.extra["refresh"] = true;
 
@@ -40,22 +39,22 @@ class NetCache extends Interceptor{
 
     if (options.extra["noCache"] != true &&
         options.method.toLowerCase() == 'get') {
-          String key = options.extra["cacheKey"] ?? options.uri.toString();
-          var ob = cache[key];
-          if (ob != null) {
-            //try return caceh 
-            if ((DateTime.now().millisecondsSinceEpoch - ob.timeStamp) / 1000 < Global.profile.cache.maxAge) {
-              return cache[key].response;
-            }
-            else {
-              cache.remove(key);
-            }
-          }
+      String key = options.extra["cacheKey"] ?? options.uri.toString();
+      var ob = cache[key];
+      if (ob != null) {
+        //try return caceh
+        if ((DateTime.now().millisecondsSinceEpoch - ob.timeStamp) / 1000 <
+            Global.profile.cache.maxAge) {
+          return cache[key].response;
+        } else {
+          cache.remove(key);
         }
+      }
+    }
   }
 
   @override
-  Future onResponse(Response response) async{
+  Future onResponse(Response response) async {
     if (Global.profile.cache.enable) {
       _saveCache(response);
     }
@@ -66,17 +65,15 @@ class NetCache extends Interceptor{
     cache.remove(key);
   }
 
-  void _saveCache(Response response){
+  void _saveCache(Response response) {
     RequestOptions options = response.request;
     if (options.extra["noCache"] != true &&
-    options.method.toLowerCase() == "get") {
-      if (cache.length == Global.profile.cache.maxCount){
+        options.method.toLowerCase() == "get") {
+      if (cache.length == Global.profile.cache.maxCount) {
         cache.remove(cache[cache.keys.first]);
       }
       String key = options.extra["cacheKey"] ?? options.uri.toString();
       cache[key] = CacheObject(response);
     }
+  }
 }
-
-}
-
