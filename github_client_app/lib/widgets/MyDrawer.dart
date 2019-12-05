@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:github_client_app/common/Global.dart';
 import 'package:github_client_app/common/GmLocalizations.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-
+import 'package:provider/provider.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({
@@ -89,7 +89,7 @@ class MyDrawer extends StatelessWidget {
               title: Text(""),
               onTap: () => Navigator.pushNamed(context, "language"),
             ),
-            if (userModel.isLogin)
+            if (userModel.login)
               ListTile(
                 leading: const Icon(Icons.power_settings_new),
                 // title: Text(gm.logout),
@@ -150,13 +150,5 @@ class MyDrawer extends StatelessWidget {
         errorWidget: (context, url, error) => placeholder,
       ),
     );
-  }
-}
-
-class Consumer extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return null;
   }
 }
