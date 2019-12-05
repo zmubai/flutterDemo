@@ -30,6 +30,7 @@ dev_dependencies:
     flutter_localizations:
           sdk: flutter
     cupertino_icons: ^0.1.2
+    loading:
     cached_network_image:
     flukit:
     provider:

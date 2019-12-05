@@ -74,7 +74,7 @@ class MyDrawer extends StatelessWidget {
   Widget _buildMenus() {
     return Consumer<UserModel>(
       builder: (BuildContext context, UserModel userModel, Widget child) {
-        var gm = GmLocalizations.of(context);
+        var gm = "gm";
         return ListView(
           children: <Widget>[
             ListTile(
